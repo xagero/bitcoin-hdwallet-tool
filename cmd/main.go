@@ -23,7 +23,7 @@ func main() {
 
 		// Configure
 		num := 10
-		net := &chaincfg.MainNetParams
+		net := &chaincfg.MainNetParams // .SigNetParams
 		compress := true
 
 		password := cmd.GetOption("pass").Value()

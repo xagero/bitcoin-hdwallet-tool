@@ -18,9 +18,9 @@ func (key *Key) GenerateSegWitNested(net *chaincfg.Params, compress bool) (strin
 	btcwif, _ := btcutil.NewWIF(privateKey, net, compress)
 
 	hash160 := btcutil.Hash160(btcwif.SerializePubKey())
-	addressWitness, _ := btcutil.NewAddressWitnessPubKeyHash(hash160, &chaincfg.MainNetParams)
+	addressWitness, _ := btcutil.NewAddressWitnessPubKeyHash(hash160, net)
 	payToAddress, _ := txscript.PayToAddrScript(addressWitness)
-	addressScriptHash, _ := btcutil.NewAddressScriptHash(payToAddress, &chaincfg.MainNetParams)
+	addressScriptHash, _ := btcutil.NewAddressScriptHash(payToAddress, net)
 
 	return btcwif.String(), addressScriptHash.EncodeAddress()
 }
@@ -36,7 +36,7 @@ func (key *Key) GenerateBech32(net *chaincfg.Params, compress bool) (string, str
 
 	// Encode to hash160 (ripemd160)
 	hash160 := btcutil.Hash160(btcwif.SerializePubKey())
-	addressWitness, _ := btcutil.NewAddressWitnessPubKeyHash(hash160, &chaincfg.MainNetParams)
+	addressWitness, _ := btcutil.NewAddressWitnessPubKeyHash(hash160, net)
 
 	return btcwif.String(), addressWitness.EncodeAddress()
 }
@@ -50,7 +50,7 @@ func (key *Key) GenerateTaproot(net *chaincfg.Params, compress bool) (string, st
 	btcwif, _ := btcutil.NewWIF(privateKey, net, compress)
 
 	tapKey := txscript.ComputeTaprootKeyNoScript(publicKey)
-	addressTaproot, _ := btcutil.NewAddressTaproot(schnorr.SerializePubKey(tapKey), &chaincfg.MainNetParams)
+	addressTaproot, _ := btcutil.NewAddressTaproot(schnorr.SerializePubKey(tapKey), net)
 
 	return btcwif.String(), addressTaproot.EncodeAddress()
 }
